@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Products</h1>
+    <h1>Products Me</h1>
 
     <table v-if="products.length" class="table">
       <thead>
@@ -40,7 +40,7 @@ export default {
     products: [],
   }),
   async mounted() {
-    const res = await fetch('/api/products')
+    const res = await fetch('/api/products/me')
     this.products = await res.json()
   }
 }

@@ -4,23 +4,29 @@
 
     <h1>Create new Product</h1>
 
-    <input type="text" v-model="name" class="form-control mb-2">
+    <input type="text" v-model="name" placeholder="Name" class="form-control mb-2">
 
     <button @click="createProduct" class="btn btn-primary">Create</button>
   </div>
 </template>
 
 <script>
+import {mapGetters} from "vuex";
+
 export default {
   name: "ProductNew",
   data: () => ({
     error: null,
     name: ''
   }),
+  computed: {
+    ...mapGetters('auth', ['user'])
+  },
   methods: {
     createProduct: function () {
       const body = {
-        name: this.name
+        name: this.name,
+        user_id: this.user.id
       }
 
       fetch('/api/products', {

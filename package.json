@@ -2,6 +2,8 @@
   "name": "exo-backoffice",
   "private": "true",
   "dependencies": {
+    "@casl/ability": "^3.4.0",
+    "@casl/vue": "^0.5.1",
     "@rails/webpacker": "5.4.3",
     "autoprefixer": "^10",
     "postcss": "^8",
@@ -9,6 +11,7 @@
     "vue": "2",
     "vue-loader": "15.7.0",
     "vue-router": "^3.0.1",
+    "vue-router-multiguard": "^1.0.3",
     "vue-template-compiler": "^2.7.10",
     "vuex": "^3.6.2",
     "webpack": "^4.46.0",

@@ -915,6 +915,18 @@
     "@babel/helper-validator-identifier" "^7.19.1"
     "to-fast-properties" "^2.0.0"
 
+"@casl/ability@^2.0.0 || ^3.0.0", "@casl/ability@^3.4.0":
+  "integrity" "sha512-aJodlkXamBRNnb25m0xuibU6StiyWZzz7EFivqLKO5kmfLDAwrIklysa1w4K/Exi1mRt+lfOp7pSb4QtuAXx+A=="
+  "resolved" "https://registry.npmjs.org/@casl/ability/-/ability-3.4.0.tgz"
+  "version" "3.4.0"
+  dependencies:
+    "sift" "^9.0.4"
+
+"@casl/vue@^0.5.1":
+  "integrity" "sha512-a3ZAYoQEr5dnPFQsDnivlC5UBYWKZD0XPvDohzJVCCjztRZIEOFOd/Ns502yTqe9sIJPq38f5nGsZ+YIIVWcIg=="
+  "resolved" "https://registry.npmjs.org/@casl/vue/-/vue-0.5.1.tgz"
+  "version" "0.5.1"
+
 "@csstools/convert-colors@^1.4.0":
   "integrity" "sha512-5a6wqoJV/xEdbRNKVo6I4hO3VjyDq//8q2f9I6PBAvMesJHFauXDorcNCsr9RzvsZnaWi5NYCcfyqP1QeFHFbw=="
   "resolved" "https://registry.npmjs.org/@csstools/convert-colors/-/convert-colors-1.4.0.tgz"
@@ -6610,6 +6622,11 @@
     "get-intrinsic" "^1.0.2"
     "object-inspect" "^1.9.0"
 
+"sift@^9.0.4":
+  "integrity" "sha512-q8Wvt15s0UJfIgVBEupXwITi8AKoHwCZbIO/bz+YMgEZRPh5qj/gjvYtqhKjHWe9srbuq5DyYeRyWPVjkOihPg=="
+  "resolved" "https://registry.npmjs.org/sift/-/sift-9.0.7.tgz"
+  "version" "9.0.7"
+
 "signal-exit@^3.0.0":
   "integrity" "sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ=="
   "resolved" "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.7.tgz"
@@ -7353,6 +7370,11 @@
     "loader-utils" "^1.1.0"
     "vue-hot-reload-api" "^2.3.0"
     "vue-style-loader" "^4.1.0"
+
+"vue-router-multiguard@^1.0.3":
+  "integrity" "sha512-56r7WpUUY0QuCfvezdggV5ubtxG0SuCw6RO0SSioq6ec7iAakMt3XLzxHrZARZrv5tMk6kzHLBTERwrl9vcvZg=="
+  "resolved" "https://registry.npmjs.org/vue-router-multiguard/-/vue-router-multiguard-1.0.3.tgz"
+  "version" "1.0.3"
 
 "vue-router@^3.0.1":
   "integrity" "sha512-vLLoY452L+JBpALMP5UHum9+7nzR9PeIBCghU9ZtJ1eWm6ieUI8Zb/DI3MYxH32bxkjzYV1LRjNv4qr8d+uX/w=="

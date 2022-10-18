@@ -7,7 +7,11 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :sessions => 'sessions' }
 
   namespace :api do
-    resources :products
+    resources :products do
+      collection do
+        get 'me'
+      end
+    end
     resources :widgets
   end
 

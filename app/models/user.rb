@@ -4,4 +4,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :rememberable
 
   has_many :products
+
+  def admin?
+    role == 'admin'
+  end
 end

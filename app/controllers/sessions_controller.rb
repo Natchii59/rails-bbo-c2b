@@ -3,7 +3,7 @@ class SessionsController < Devise::SessionsController
 
   def create
     super do |user|
-      render json: user
+      render json: user.as_json.merge(rules: Ability.new(user).to_list), status: :created
       return
     end
   end

@@ -13,6 +13,9 @@ import WidgetShow from "./views/widgets/widget-show";
 import WidgetNew from "./views/widgets/widget-new";
 import WidgetEdit from "./views/widgets/widget-edit";
 import Login from "./views/user/login";
+import ProductsMe from "./views/products/products-me";
+import {ability} from "./store/ability";
+import Multiguard from "vue-router-multiguard";
 
 Vue.use(VueRouter)
 
@@ -28,7 +31,14 @@ const router = new VueRouter({
     {
       path: '/products',
       name: 'Products',
-      component: Product
+      component: Product,
+      meta: {resource: 'Product'}
+    },
+    {
+      path: '/products/me',
+      name: 'ProductsMe',
+      component: ProductsMe,
+      meta: {resource: 'Product'}
     },
     {
       path: '/products/new',
@@ -91,7 +101,7 @@ const requireNoAuth = async (to, from, next) => {
 
 const requireAuth = async (to, from, next) => {
   if (!store.getters['auth/user']) {
-    store.dispatch('auth/loginSession').then(() => {
+    await store.dispatch('auth/loginSession').then(() => {
       if (!store.getters['auth/error']) {
         next()
       } else {
@@ -106,11 +116,33 @@ const requireAuth = async (to, from, next) => {
   }
 }
 
+const authorizeUser = (to, from, next) => {
+  if (to.path !== '/login' && to.path !== '/' && to.meta.resource) {
+    const canNavigate = to.matched.some(route => {
+      console.log(route)
+      console.log(ability.can(route.meta.action || 'read', route.meta.resource))
+      return ability.can(route.meta.action || 'read', route.meta.resource)
+    })
+
+    if (!canNavigate) {
+      if (from.path === '/') {
+        next('/')
+      } else {
+        next(false)
+      }
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
+}
+
 router.beforeEach(async (to, from, next) => {
   if (to.matched.some(record => record.meta.requireNoAuth)) {
     return await requireNoAuth(to, from, next)
   } else {
-    return await requireAuth(to, from, next)
+    return await Multiguard([requireAuth, authorizeUser])(to, from, next)
   }
 })
 

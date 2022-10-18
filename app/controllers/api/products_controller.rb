@@ -1,9 +1,15 @@
 class Api::ProductsController < ApplicationController
   before_action :set_product, only: [:show, :update, :destroy]
 
+  # before_action :authenticate_user!, only: [:me]
+
   # GET /products
   def index
-    render json: Product.all
+    render json: Product.accessible_by(current_ability).all
+  end
+
+  def me
+    render json: current_user.products
   end
 
   # GET /products/1
