@@ -39,10 +39,9 @@ export default {
   data: () => ({
     widgets: []
   }),
-  mounted() {
-    fetch('/api/widgets')
-    .then((res) => res.json())
-    .then((data) => this.widgets = data)
+  async mounted() {
+    const res = await fetch('/api/widgets')
+    this.widgets = await res.json()
   }
 }
 </script>

@@ -61,15 +61,15 @@ export default {
       if (!res.ok) commit('setError', {status: res.status, data})
       else commit('setUser', data)
     },
-    logout: ({commit}) => {
-      return fetch('/users/sign_out', {
+    logout: async ({commit}) => {
+      await fetch('/users/sign_out', {
         method: 'DELETE',
         headers: {
           Accept: 'application/json'
         }
-      }).then(() => {
-        commit('setUser', null)
       })
+
+      commit('setUser', null)
     }
   }
 }

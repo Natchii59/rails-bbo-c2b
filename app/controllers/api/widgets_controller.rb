@@ -1,9 +1,9 @@
 class Api::WidgetsController < ApplicationController
-  before_action :set_widget, only: [:show, :update, :destroy]
+  load_and_authorize_resource :except => [:get_by_token]
 
   # GET /widgets
   def index
-    render json: Widget.all.to_json(:include => { :product => { :only => :name } })
+    render json: Widget.accessible_by(current_ability).all.to_json(:include => { :product => { :only => :name } })
   end
 
   # GET /widgets/1
@@ -38,12 +38,20 @@ class Api::WidgetsController < ApplicationController
     head :no_content
   end
 
-  private
+  def get_by_token
+    if request.headers['Authorization'] != Rails.application.secrets[:widget_token]
+      raise CanCan::AccessDenied
+    end
 
-  # Use callbacks to share common setup or constraints between actions.
-  def set_widget
-    @widget = Widget.find(params[:id])
+    begin
+      render json: Widget.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      head :not_found
+    end
+
   end
+
+  private
 
   # Only allow a list of trusted parameters through.
   def widget_params

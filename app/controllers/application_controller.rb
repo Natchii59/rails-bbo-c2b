@@ -4,4 +4,8 @@ class ApplicationController < ActionController::Base
   def index
     render inline: '', layout: 'application'
   end
+
+  rescue_from CanCan::AccessDenied do
+    head :forbidden
+  end
 end

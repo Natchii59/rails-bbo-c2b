@@ -28,23 +28,24 @@ export default {
     widget: {},
     products: {}
   }),
-  mounted() {
-    fetch(`/api/widgets/${this.id}`)
-    .then((res) => res.json())
-    .then((data) => this.widget = data)
+  async mounted() {
+    const resWidget = await fetch(`/api/widgets/${this.id}`)
 
-    fetch('/api/products')
-    .then((res) => res.json())
-    .then((data) => this.products = data)
+    if ([403, 404].includes(resWidget.status)) return this.$router.push('/widgets')
+
+    this.widget = await resWidget.json()
+
+    const resProducts = await fetch('/api/products')
+    this.products = await resProducts.json()
   },
   methods: {
-    updateWidget: function () {
+    updateWidget: async function () {
       const body = {
         name: this.widget.name,
         product_id: this.widget.product_id
       }
 
-      fetch(`/api/widgets/${this.id}`, {
+      const res = await fetch(`/api/widgets/${this.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -52,14 +53,13 @@ export default {
         },
         body: JSON.stringify(body)
       })
-      .then((res) => {
-        if (res.ok) this.$router.push({name: 'WidgetShow', params: {id: this.id}})
-        else res.json().then((data) => {
-          const entries = Object.entries(data)
-          this.error = entries.map((e) => `${e[0]} ${e[1]}`).join('\n')
-        })
-      })
+      if (res.ok) return this.$router.push({name: 'WidgetShow', params: {id: this.id}})
+
+      const data = await res.json()
+
+      const entries = Object.entries(data)
+      this.error = entries.map((e) => `${e[0]} ${e[1]}`).join('\n')
     }
   }
-}
+};
 </script>

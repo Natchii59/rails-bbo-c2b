@@ -22,18 +22,20 @@ export default {
     error: null,
     product: {},
   }),
-  mounted() {
-    fetch(`/api/products/${this.id}`)
-    .then((data) => data.json())
-    .then((product) => this.product = product)
+  async mounted() {
+    const res = await fetch(`/api/products/${this.id}`)
+
+    if ([403, 404].includes(res.status)) return this.$router.push('/products')
+
+    this.product = await res.json()
   },
   methods: {
-    updateProduct: function () {
+    updateProduct: async function () {
       const body = {
         name: this.product.name
       }
 
-      fetch(`/api/products/${this.id}`, {
+      const res = await fetch(`/api/products/${this.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -41,13 +43,12 @@ export default {
         },
         body: JSON.stringify(body)
       })
-      .then((res) => {
-        if (res.ok) this.$router.push({name: 'ProductShow', params: {id: this.id}})
-        else res.json().then((data) => {
-          const entries = Object.entries(data)
-          this.error = entries.map((e) => `${e[0]} ${e[1]}`).join('\n')
-        })
-      })
+      if (res.ok) return this.$router.push({name: 'ProductShow', params: {id: this.id}})
+
+      const data = await res.json()
+
+      const entries = Object.entries(data)
+      this.error = entries.map((e) => `${e[0]} ${e[1]}`).join('\n')
     }
   }
 }

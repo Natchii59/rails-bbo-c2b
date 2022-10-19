@@ -21,17 +21,18 @@ export default {
   data: () => ({
     product: {}
   }),
-  mounted() {
-    fetch(`/api/products/${this.id}`)
-    .then((data) => data.json())
-    .then((data) => this.product = data)
+  async mounted() {
+    const res = await fetch(`/api/products/${this.id}`)
+
+    if ([403, 404].includes(res.status)) return this.$router.push('/products')
+
+    this.product = await res.json()
   },
   methods: {
-    deleteProduct: function () {
-      fetch(`/api/products/${this.id}`, {method: 'DELETE'})
-      .then((res) => {
-        if (res.ok) this.$router.push({name: 'Products'})
-      })
+    deleteProduct: async function () {
+      const res = await fetch(`/api/products/${this.id}`, {method: 'DELETE'})
+
+      if (res.status === 403 || res.ok) this.$router.push({name: 'Products'})
     }
   }
 }

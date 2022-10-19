@@ -6,7 +6,7 @@
 
     <p v-if="user" class="m-0">{{ user.email }}</p>
 
-    <button v-if="user" @click="logout" class="btn btn-danger">Logout</button>
+    <button v-if="user" @click="logoutMethod" class="btn btn-danger">Logout</button>
   </div>
 </template>
 
@@ -19,7 +19,11 @@ export default {
     ...mapGetters('auth', ['user'])
   },
   methods: {
-    ...mapActions('auth', ['logout'])
+    ...mapActions('auth', ['logout']),
+    logoutMethod: async function () {
+      await this.logout()
+      this.$router.push('/login')
+    }
   }
 }
 </script>

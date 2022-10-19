@@ -8,7 +8,11 @@ class Ability
       can :manage, :all
     end
 
-    can :read, Product, user_id: user.id
+    alias_action :create, :read, :update, :destroy, to: :crud
+
+    can :crud, Product, user_id: user.id
+
+    can :crud, Widget, product: { user_id: user.id }
 
     # Define abilities for the user here. For example:
     #

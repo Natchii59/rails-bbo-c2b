@@ -1,15 +1,9 @@
 class Api::ProductsController < ApplicationController
-  before_action :set_product, only: [:show, :update, :destroy]
-
-  # before_action :authenticate_user!, only: [:me]
+  load_and_authorize_resource
 
   # GET /products
   def index
     render json: Product.accessible_by(current_ability).all
-  end
-
-  def me
-    render json: current_user.products
   end
 
   # GET /products/1
@@ -45,11 +39,6 @@ class Api::ProductsController < ApplicationController
   end
 
   private
-
-  # Use callbacks to share common setup or constraints between actions.
-  def set_product
-    @product = Product.find(params[:id])
-  end
 
   # Only allow a list of trusted parameters through.
   def product_params

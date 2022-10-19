@@ -21,17 +21,18 @@ export default {
   data: () => ({
     widget: {}
   }),
-  mounted() {
-    fetch(`/api/widgets/${this.id}`)
-    .then((res) => res.json())
-    .then((data) => this.widget = data)
+  async mounted() {
+    const res = await fetch(`/api/widgets/${this.id}`)
+
+    if ([403, 404].includes(res.status)) return this.$router.push('/widgets')
+
+    this.widget = await res.json()
   },
   methods: {
-    deleteWidget: function () {
-      fetch(`/api/widgets/${this.id}`, {method: 'DELETE'})
-      .then((res) => {
-        if (res.ok) this.$router.push({name: 'Widgets'})
-      })
+    deleteWidget: async function () {
+      const res = await fetch(`/api/widgets/${this.id}`, {method: 'DELETE'})
+
+      if (res.status === 403 || res.ok) this.$router.push({name: 'Widgets'})
     }
   }
 }

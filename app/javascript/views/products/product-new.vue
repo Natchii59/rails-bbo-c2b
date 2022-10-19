@@ -23,29 +23,27 @@ export default {
     ...mapGetters('auth', ['user'])
   },
   methods: {
-    createProduct: function () {
+    createProduct: async function () {
       const body = {
         name: this.name,
         user_id: this.user.id
       }
 
-      fetch('/api/products', {
+      const res = await fetch('/api/products', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
         },
         body: JSON.stringify(body)
-      }).then((res) => {
-        if (res.status === 201) res.json()
-        .then((data) => {
-          this.$router.push({name: 'ProductShow', params: {id: data.id.toString()}})
-        })
-        else res.json().then((data) => {
-          const entries = Object.entries(data)
-          this.error = entries.map((e) => `${e[0]} ${e[1]}`).join('\n')
-        })
       })
+
+      const data = await res.json()
+
+      if (res.ok) return this.$router.push({name: 'ProductShow', params: {id: data.id.toString()}})
+
+      const entries = Object.entries(data)
+      this.error = entries.map((e) => `${e[0]} ${e[1]}`).join('\n')
     }
   }
 }

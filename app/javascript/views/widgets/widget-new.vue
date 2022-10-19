@@ -12,7 +12,7 @@
     </select>
     <router-link v-else :to="{name: 'ProductNew'}">Please create a product before</router-link>
 
-    <button @click="createWidget" class="btn btn-primary">Create widget</button>
+    <button @click="createWidget" class="btn btn-primary" :disabled="disable">Create widget</button>
   </div>
 </template>
 
@@ -21,37 +21,42 @@ export default {
   name: "WidgetNew",
   data: () => ({
     error: null,
+    disable: false,
     name: "",
     product_id: null,
     products: []
   }),
-  mounted() {
-    fetch('/api/products')
-    .then((res) => res.json())
-    .then((data) => this.products = data)
+  async mounted() {
+    const res = await fetch('/api/products')
+    this.products = await res.json()
+
+    if (!this.products.length) {
+      this.error = 'Please create a product before'
+      this.disable = true
+    }
   },
   methods: {
-    createWidget: function () {
+    createWidget: async function () {
       const body = {
         name: this.name,
         product_id: this.product_id
       }
 
-      fetch('/api/widgets', {
+      const res = await fetch('/api/widgets', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json'
         },
         body: JSON.stringify(body)
-      }).then((res) => {
-        if (res.ok) res.json()
-        .then((data) => this.$router.push({name: 'WidgetShow', params: {id: data.id.toString()}}))
-        else res.json().then((data) => {
-          const entries = Object.entries(data)
-          this.error = entries.map((e) => `${e[0]} ${e[1]}`).join('\n')
-        })
       })
+
+      const data = await res.json()
+
+      if (res.ok) return this.$router.push({name: 'WidgetShow', params: {id: data.id.toString()}})
+
+      const entries = Object.entries(data)
+      this.error = entries.map((e) => `${e[0]} ${e[1]}`).join('\n')
     }
   }
 }

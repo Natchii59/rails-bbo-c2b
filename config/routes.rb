@@ -7,12 +7,12 @@ Rails.application.routes.draw do
   devise_for :users, :controllers => { :sessions => 'sessions' }
 
   namespace :api do
-    resources :products do
+    resources :products
+    resources :widgets do
       collection do
-        get 'me'
+        get 'token/:id', to: 'widgets#get_by_token'
       end
     end
-    resources :widgets
   end
 
   root 'application#index'

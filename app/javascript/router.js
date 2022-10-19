@@ -13,7 +13,6 @@ import WidgetShow from "./views/widgets/widget-show";
 import WidgetNew from "./views/widgets/widget-new";
 import WidgetEdit from "./views/widgets/widget-edit";
 import Login from "./views/user/login";
-import ProductsMe from "./views/products/products-me";
 import {ability} from "./store/ability";
 import Multiguard from "vue-router-multiguard";
 
@@ -35,27 +34,24 @@ const router = new VueRouter({
       meta: {resource: 'Product'}
     },
     {
-      path: '/products/me',
-      name: 'ProductsMe',
-      component: ProductsMe,
-      meta: {resource: 'Product'}
-    },
-    {
       path: '/products/new',
       name: 'ProductNew',
-      component: ProductNew
+      component: ProductNew,
+      meta: {resource: 'Product'}
     },
     {
       path: '/products/:id',
       name: 'ProductShow',
       component: ProductShow,
-      props: true
+      props: true,
+      meta: {resource: 'Product'}
     },
     {
       path: '/products/:id/edit',
       name: 'ProductEdit',
       component: ProductEdit,
-      props: true
+      props: true,
+      meta: {resource: 'Product'}
     },
     {
       path: '/widgets',
@@ -119,8 +115,6 @@ const requireAuth = async (to, from, next) => {
 const authorizeUser = (to, from, next) => {
   if (to.path !== '/login' && to.path !== '/' && to.meta.resource) {
     const canNavigate = to.matched.some(route => {
-      console.log(route)
-      console.log(ability.can(route.meta.action || 'read', route.meta.resource))
       return ability.can(route.meta.action || 'read', route.meta.resource)
     })
 
